@@ -4,8 +4,6 @@ const equalsButton = document.querySelector("#equals")
 const clearButton = document.querySelector("#clear")
 const deleteButton = document.querySelector("#delete")
 const display = document.querySelector("#display")
-const _mathInput = document.querySelector("#mathInput")
-const _marthOutput = document.querySelector("#mathOutput")
 let sepator = ""
 let inputs = []
 let mathTerms = []
@@ -106,15 +104,4 @@ equalsButton.addEventListener("click", () => {
     display.innerText = result
     inputs = []
     mathTerms = []
-})
-
-_mathInput.addEventListener("input", (ev) => {
-    console.log("Tsy")
-    _marthOutput.innerText = "$" + _mathInput.value + "$"
-    MathJax.typeset()
-})
-
-_marthOutput.addEventListener("input", (ev) => {
-    console.log("TsyOut")
-    MathJax.typeset()
 })
