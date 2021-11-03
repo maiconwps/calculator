@@ -50,8 +50,6 @@ DIGIT_BUTTONS.forEach(digitButton => digitButton.addEventListener("click", () =>
     }
 
     display.innerText = "$" + mathTerms.join("") + "$"
-    _marthOutput.innerText = "$" + mathTerms.join("") + "$"
-
     MathJax.typeset()
 
 }))
@@ -85,7 +83,6 @@ deleteButton.addEventListener("click", (ev) =>{
     }
 
     display.innerText = "$" + mathTerms.join("") + "$"
-    _marthOutput.innerText = "$" + mathTerms.join("") + "$"
 
     MathJax.typeset()
 })
