@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MW Calculator</title>
+    <link rel="stylesheet" href="main.css">
+    <script>
+        MathJax = {
+            loader: {
+    load: ['input/asciimath']
+  },
+        //   tex: {
+        //     inlineMath: [['$', '$'], ['\\(', '\\)']]
+        //   },
+          asciimath: {
+            delimiters: [['`','`'], ['$','$']]
+        }
+        };
+        </script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    <script src="calculator.js" defer></script>
+    <script src="main.js" defer></script>
+</head>
+
+<body>
+    <div class="container">
+        <form action="" class="calculator" name="calc" onsubmit="">
+            <div id="display" type="text" class="display"> </div>
+
+            <button type="button" class="key digit operator operator-secondary" data-type-term="operator"
+                data-operation="rz" data-ascii-math ="sqrt">&#x221A<sup><sup><sup>&#x2212&#x2212&#x2212</sup></sup></sup></button>
+            <button type="button" class="key digit operator operator-secondary" data-type-term="operator"
+                data-operation="^" data-ascii-math ="^">x<sup>y</sup></button>
+            <button type="button" class="key digit operator operator-secondary" data-type-term="operator"
+                data-operation="^2"data-ascii-math ="^2">x<sup>2</sup></button>
+            <button type="button" class="key digit operator operator-secondary" data-type-term="operator"
+                data-operation="%" data-ascii-math ="%">%</button>
+            <button type="button" class="key digit operator operator-secondary" data-type-term="operator"
+                data-operation="!" data-ascii-math ="!">!</button>
+
+            <button type="button" class="key digit operator operator-secondary" data-type-term="operator"
+                data-operation="rz3" data-ascii-math ="root(3)">&#x221B<sup><sup>&#x2212&#x2212</sup></sup></button>
+            <button type="button" class="key digit operator operator-secondary" data-type-term="operator"
+                data-operation="^-1" data-ascii-math ="^-1">x<sup>-1</sup></button>
+            <button type="button" class="key digit operator operator-secondary" data-type-term="operator"
+                data-operation="^3" data-ascii-math ="^3">x<sup>3</sup></button>
+            <button type="button" class="key digit grouper" data-type-term="grouper">(</button>
+            <button type="button" class="key digit grouper" data-type-term="grouper">)</button>
+
+            <button type="button" class="key digit number" data-type-term="number">7</button>
+            <button type="button" class="key digit number" data-type-term="number">8</button>
+            <button type="button" class="key digit number" data-type-term="number">9</button>
+
+            <button id="delete" type="button" class="key del">DEL</button>
+            <button id="clear" type="button" class="key clear">AC</button>
+            <button type="button" class="key digit number" data-type-term="number">4</button>
+            <button type="button" class="key digit number" data-type-term="number">5</button>
+            <button type="button" class="key digit number" data-type-term="number">6</button>
+            <button type="button" class="key digit operator operator-primary" data-type-term="operator"
+                data-operation="/" data-ascii-math ="-:">&#x00F7</button>
+            <button type="button" class="key digit operator operator-primary" data-type-term="operator"
+                data-operation="*" data-ascii-math ="xx">&#x00D7</button>
+            <button type="button" class="key digit number" data-type-term="number">1</button>
+            <button type="button" class="key digit number" data-type-term="number">2</button>
+            <button type="button" class="key digit number" data-type-term="number">3</button>
+            <button type="button" class="key digit operator operator-primary" data-type-term="operator"
+                data-operation="-" data-ascii-math ="\-">&#x2212</button>
+            <button type="button" class="key digit operator operator-primary" data-type-term="operator"
+                data-operation="+" data-ascii-math ="\+">+</button>
+            <button type="button" class="key digit number" data-type-term="constant" data-constant="pi">&#x03C0</button>
+
+            <button type="button" class="key digit number" data-type-term="number">0</button>
+            <button type="button" class="key digit number" data-type-term="sepator">.</button>
+
+
+            <button type="button" id="equals" class="key equals">=</button>
+
+        </form>
+    </div>
+
+    <div id="math">
+        <textarea name="textarea" id="mathInput" rows="5" cols="30"></textarea>
+
+        <div id="mathOutput" contentEditable="true">
+            $ ax^2 + bx + c = 0 $
+        </div>
+        <!-- $$x = {-b \pm \sqrt{b^2-4ac} \over 2a}.$$ -->
+    </div>
+
+    <!-- When \(a \ne 0\), there are two solutions to \(ax^2 + bx + c = 0\) and they ar -->
+
+</body>
+
+</html>

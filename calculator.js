@@ -41,7 +41,7 @@ const CALCULATOR = (() => {
     
     // -------------------------------UTILITY FUNCTIONS------------------------------------------------------
     const isValidNumber = value => typeof (value) === "number" && !isNaN(value) && isFinite(value)
-    const getLastDigit = () => _last(currentExpression)
+    const getLastInput = () => _last(currentExpression)
 
 
     // -------------------------------MATH CONSTANT------------------------------------------------------
@@ -263,7 +263,7 @@ const CALCULATOR = (() => {
     const nextTermExpressionExpected = (currentTermType, currentTermPosition) => {
         switch(currentTermType){
             case "grouper":
-                const commom = ["número"]
+                const commom = ["número", "digit"]
 
                 switch(currentTermPosition){
                     case "left":
@@ -274,25 +274,27 @@ const CALCULATOR = (() => {
             case "operator":
                 switch(currentTermPosition){
                     case "left":
-                        return ["número", ...LEFT_OPERATORS, ...LETF_GROUPERS]
+                        return ["número", "digit", ...LEFT_OPERATORS, ...LETF_GROUPERS]
                     case "center":
-                        return ["número", ...LEFT_OPERATORS, ...LETF_GROUPERS]
+                        return ["número", "digit", ...LEFT_OPERATORS, ...LETF_GROUPERS]
                     case "right":
                         return [...OPERATORS, ...GROUPERS]
                 }
             case "número":
-                return [...OPERATORS, ...GROUPERS]
+                return ["digit", ...OPERATORS, ...GROUPERS]
+            case "digit":
+                return ["digit", ...OPERATORS, ...GROUPERS]
             case undefined:
-                return ["número", ...LEFT_OPERATORS, ...LETF_GROUPERS]
+                return ["número", "digit", ...LEFT_OPERATORS, ...LETF_GROUPERS]
         }
     }
 
-    const enterGrouperDigit = input => {
+    const enterGrouperInput = input => {
         const lastGrouper = getLastGrouper()
         let mathGrouper = undefined
         let numberGrouper = 0
         let typeGrouper = undefined
-        const lastDigit = getLastDigit()
+        const lastInput = getLastInput()
 
         if(!_containsValue(nextTermsExpected)(input)){
             throw Error(`É esperado um dos termos: ${nextTermsExpected.join(", ")}`)
@@ -304,7 +306,7 @@ const CALCULATOR = (() => {
             grouperQueue.push(input)
             numberGrouper = grouperQueue.length
 
-            if(isValidNumber(lastDigit) || isValidRightOperator(lastDigit)){
+            if(isValidNumber(lastInput) || isValidRightOperator(lastInput)){
                 _addSuppression()
             }
         }
@@ -323,7 +325,7 @@ const CALCULATOR = (() => {
     }
 
     
-    const getOperationByDigit = input =>{
+    const getOperationByInput = input =>{
         let operation = getPryOperationByOperator(input)
 
         if(_containsValue(nextTermsExpected)(operation.termExpression)){
@@ -338,18 +340,18 @@ const CALCULATOR = (() => {
         }
     }
 
-    const enterOperatorDigit = input => {
-        let operation = getOperationByDigit(input)
+    const enterOperatorInput = input => {
+        let operation = getOperationByInput(input)
 
         if(operation === undefined){
             throw Error(`É esperado um dos termos: ${nextTermsExpected.join(", ")}`)
         }
 
         if(operation.position === "left"){
-            const lastDigit = getLastDigit()
-            const isValidSuppression = isValidNumber(lastDigit) ||
-                                        isValidRightGrouper(lastDigit) ||
-                                        isValidRightOperator(lastDigit)
+            const lastInput = getLastInput()
+            const isValidSuppression = isValidNumber(lastInput) ||
+                                        isValidRightGrouper(lastInput) ||
+                                        isValidRightOperator(lastInput)
             if(isValidSuppression){
                 _addSuppression()
             }
@@ -359,14 +361,14 @@ const CALCULATOR = (() => {
         return operation
     }
 
-    const enterNumberDigit = input => {
-        const lastDigit = getLastDigit()
+    const enterNumberInput = input => {
+        const lastInput = getLastInput()
 
         if(!_containsValue(nextTermsExpected)("número")){
             throw Error(`É esperado um dos termos: ${nextTermsExpected.join(", ")}`)
         }
         
-        if (isValidRightGrouper(lastDigit)){
+        if (isValidRightGrouper(lastInput)){
             _addSuppression()
         }
         nextTermsExpected = nextTermExpressionExpected("número")
@@ -374,7 +376,36 @@ const CALCULATOR = (() => {
 
 
     // ----------------------------------MAIN FUNCTIONS--------------------------------------------------
-    const enter = (input) => {
+    const enterDigit = input => {
+        if(nextTermsExpected.length === 0){
+            nextTermsExpected = nextTermExpressionExpected()
+        }
+
+        if (!_containsValue(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"])(input)){
+            throw Error("Dígito inválido.")
+        }
+        
+        let lastInput = getLastInput()
+
+        if(!_containsValue(nextTermsExpected)("digit")){
+            throw Error(`É esperado um dos termos: ${nextTermsExpected.join(", ")}`)
+        }
+        
+        if (isValidRightGrouper(lastInput)){
+            _addSuppression()
+        }
+
+        if(isValidNumber(lastInput)){
+            currentExpression.push(Number(lastInput + input))
+        }
+        else{
+            currentExpression.push(Number(input))
+        }   
+
+        nextTermsExpected = nextTermExpressionExpected("digit")
+    }
+
+    const enter = input => {
         let symbol = input
         let termExpression = input
 
@@ -383,19 +414,19 @@ const CALCULATOR = (() => {
         }
 
         if (isValidGrouper(input)){
-            enterGrouperDigit(input)
+            enterGrouperInput(input)
         }
         else if (isValidOperator(input)){
-            const operation = enterOperatorDigit(input)
+            const operation = enterOperatorInput(input)
             termExpression = operation.termExpression
             symbol = operation.symbol
         }
         else if (isValidNumber(input)){
-            enterNumberDigit(input)
+            enterNumberInput(input)
         }
         else if (isValidConstant(input)){
             const constant = getConstant(input)
-            enterNumberDigit(input)
+            enterNumberInput(input)
             symbol = constant.symbol
             termExpression = constant.value
         }
@@ -422,6 +453,7 @@ const CALCULATOR = (() => {
 
     return {
         enter,
+        enterDigit,
         equals,
         list,
         reset,

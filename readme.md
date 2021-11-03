@@ -24,7 +24,7 @@ Trata-se de um código em único script, em java script puro e sem uso do temido
 
 ## Como Usar
 ### Execução
-No node, pode-se realizar o comando
+No node, pode-se realizar o comando para execuação do módulo
     
     node calculator
 ... e tudo estará bem ...
@@ -145,7 +145,7 @@ CALCULATOR.list()
 - [ ] Operação com acumuladores (somatórios).
 
 ## Futuro
-Pretende-se implementar uma interface gráfica com variações de calculadoras (básica, científica e lógica), mas isso será após eu consegui mais café :coffee::yum:....
+Pretende-se implementar variações de calculadoras (básica, científica e lógica), mas isso será após eu consegui mais café :coffee::yum:....
 
 
 
